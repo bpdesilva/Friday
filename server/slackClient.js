@@ -1,25 +1,20 @@
+'use strict';
+
 const { RTMClient } = require('@slack/client');
 
-// An access token (from your Slack app or custom integration - usually xoxb)
-const token = '';
+function handleOnAuthenticated(rtmStartData) {
+    console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
+}
 
-// The client is initialized and then started to get an active connection to the platform
-const rtm = new RTMClient(token);
-rtm.start();
+function addAuthenticatedHandler(rtm, handler) {
+    rtm.on('authenticated', handler);
+}
 
-// // Calling `rtm.on(eventName, eventHandler)` allows you to handle events
-// // When the connection is active, the 'ready' event will be triggered
-// rtm.on('ready', async () => {
 
-//   // Once the connection is open, your app will start receiving other events. It can also send messages.
+module.exports.init = function slackClient(token, logLevel) {
+    const rtm = new RTMClient(token, {logLevel: logLevel});
+    addAuthenticatedHandler(rtm, handleOnAuthenticated);
+    return rtm;
+}
 
-//   // Sending a message requires a channel ID, a DM ID, an MPDM ID, or a group ID
-//   // The following value is used as an example
-//   const conversationId = 'C1232456';
-
-//   // The RTM client can send simple string messages
-//   const res = await rtm.sendMessage('Hello there', conversationId);
-
-//   // `res` contains information about the sent message
-//   console.log('Message sent: ', res.ts);
-// });
+module.exports.addAuthenticatedHandler = addAuthenticatedHandler;
