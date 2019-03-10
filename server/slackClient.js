@@ -51,7 +51,7 @@ function addAuthenticatedHandler(rtm, handler) {
 
 
 module.exports.init = function slackClient(token, logLevel, nlpClient) {
-    rtm = RTMClient(token, { logLevel: logLevel });
+    rtm = new RTMClient(token, { logLevel: logLevel });
     nlp = nlpClient;
     addAuthenticatedHandler(rtm, handleOnAuthenticated);
     rtm.on('message', handleOnMessage);
