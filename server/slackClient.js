@@ -1,6 +1,6 @@
 'use strict';
 
-const {RTMClient} = require('@slack/client').RtmClient;
+const {RTMClient} = require('@slack/client');
 let rtm = null;
 let nlp = null;
 
